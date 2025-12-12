@@ -1,0 +1,5 @@
+{
+  "name": "Huffman Compressor",
+  "description": "A React application to demonstrate Huffman coding compression and decompression with tree visualization.",
+  "requestFramePermissions": []
+}
