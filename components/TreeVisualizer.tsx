@@ -65,8 +65,8 @@ const TreeVisualizer: React.FC<TreeVisualizerProps> = ({ root }) => {
     // Circle for nodes
     nodes.append("circle")
       .attr("r", 15)
-      .attr("fill", d => d.data.char ? "#3b82f6" : "#1e293b") // Blue for leaf, Dark for internal
-      .attr("stroke", d => d.data.char ? "#60a5fa" : "#64748b")
+      .attr("fill", d => d.data.byte !== null ? "#3b82f6" : "#1e293b") // Blue for leaf, Dark for internal
+      .attr("stroke", d => d.data.byte !== null ? "#60a5fa" : "#64748b")
       .attr("stroke-width", 2);
 
     // Text for Character (Leaves)
@@ -74,10 +74,19 @@ const TreeVisualizer: React.FC<TreeVisualizerProps> = ({ root }) => {
       .attr("dy", 5)
       .attr("text-anchor", "middle")
       .text(d => {
-          if (!d.data.char) return "";
-          if (d.data.char === " ") return "SPC";
-          if (d.data.char === "\n") return "\\n";
-          return d.data.char;
+          const val = d.data.byte;
+          if (val === null) return "";
+          
+          if (val === 32) return "SPC";
+          if (val === 10) return "\\n";
+          
+          // Printable ASCII range
+          if (val >= 33 && val <= 126) {
+            return String.fromCharCode(val);
+          }
+          
+          // Display hex for others
+          return `x${val.toString(16).toUpperCase()}`;
       })
       .attr("font-size", "10px")
       .attr("fill", "white")

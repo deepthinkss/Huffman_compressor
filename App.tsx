@@ -78,6 +78,7 @@ function App() {
 
     setTimeout(async () => {
       try {
+        // We read as text because the compressed format is JSON, regardless of the file extension
         const textContent = await compressedFile.text();
         // Pass the filename to provide a fallback if internal metadata is missing
         const { data, originalName } = await decompressFile(textContent, compressedFile.name);
@@ -94,7 +95,7 @@ function App() {
 
       } catch (err) {
         console.error(err);
-        alert("Error decompressing file. Ensure it is a valid .huff JSON file.");
+        alert("Error decompressing file. The file might be corrupted or not a valid compressed file.");
       } finally {
         setIsProcessing(false);
       }
@@ -104,12 +105,14 @@ function App() {
   const downloadCompressed = () => {
     if (!result) return;
     const fileContent = createCompressedFileContent(result);
-    const blob = new Blob([fileContent], { type: 'application/json' });
+    // Use application/octet-stream to prevent browser from guessing extensions based on content (JSON)
+    const blob = new Blob([fileContent], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    // Always download as .huff
-    a.download = `${result.originalName}.huff`;
+    // Download with the original name (e.g., file.pdf) as requested
+    // This file will contain the compressed JSON data but look like the original file
+    a.download = result.originalName;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -117,8 +120,7 @@ function App() {
   const downloadDecompressed = () => {
     if (!decompressedData) return;
     
-    // Strictly remove .huff extension if present to prevent double extensions or wrong types
-    // e.g. "document.pdf.huff" -> "document.pdf"
+    // Strictly remove .huff extension if present (legacy support)
     const cleanName = decompressedData.name.replace(/\.huff$/i, '');
 
     // Explicitly set the MIME type to ensure the browser handles the file type correctly
@@ -213,7 +215,7 @@ function App() {
                   <>
                     <FileUpload 
                       accept="*" 
-                      label="Supports TXT, PDF, DOC, DOCX, and HUFF files"
+                      label="Supports TXT, PDF, DOC, DOCX, and other files"
                       onFileSelect={setSourceFile} 
                       selectedFile={sourceFile}
                       onClear={() => setSourceFile(null)}
@@ -263,8 +265,8 @@ function App() {
                 {!decompressedData ? (
                   <>
                     <FileUpload 
-                      accept=".huff" 
-                      label="Upload a .huff file to restore"
+                      accept="*" 
+                      label="Upload a compressed file to restore"
                       onFileSelect={setCompressedFile} 
                       selectedFile={compressedFile}
                       onClear={() => setCompressedFile(null)}
