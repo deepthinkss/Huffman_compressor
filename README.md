@@ -31,3 +31,38 @@ An interactive React application that demonstrates Huffman coding, including:
 
 ## Project Structure
 
+## Project Structure
+
+
+huffman-coding-visualizer/
+│
+├── public/
+│   └── index.html
+│
+├── src/
+│   ├── components/
+│   │   ├── FrequencyTable.jsx
+│   │   ├── HuffmanTree.jsx
+│   │   ├── Encoder.jsx
+│   │   ├── Decoder.jsx
+│   │   └── Controls.jsx
+│   │
+│   ├── algorithms/
+│   │   ├── huffman.js
+│   │   ├── priorityQueue.js
+│   │   └── treeUtils.js
+│   │
+│   ├── utils/
+│   │   ├── binaryUtils.js
+│   │   └── textHelpers.js
+│   │
+│   ├── styles/
+│   │   └── globals.css
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── package.json
+├── vite.config.js
+└── README.md
