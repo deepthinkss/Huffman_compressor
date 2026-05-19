@@ -33,7 +33,7 @@ An interactive React application that demonstrates Huffman coding, including:
 
 ## Project Structure
 
-
+```bash
 huffman-coding-visualizer/
 │
 ├── public/
@@ -66,3 +66,15 @@ huffman-coding-visualizer/
 ├── package.json
 ├── vite.config.js
 └── README.md
+```
+Folder Overview
+Folder/File	Purpose
+algorithms/	Contains Huffman encoding/decoding logic
+components/	Reusable React UI components
+hooks/	Custom React hooks
+context/	Global application state
+utils/	Helper & utility functions
+styles/	Global and component-specific styling
+data/	Sample datasets for testing
+docs/	Documentation and architecture notes
+screenshots/	Images used in README/demo
